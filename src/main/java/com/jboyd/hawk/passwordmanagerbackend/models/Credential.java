@@ -13,6 +13,7 @@ public class Credential {
     private Long id;
     private String name;
     private String password;
+    private long userId;
 
     public Long getId() {
         return id;
@@ -36,5 +37,13 @@ public class Credential {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 }

@@ -22,8 +22,8 @@ public class CredentialService {
         return credentialRepo.findById(id);
     }
 
-    public List<Credential> getAllCredentials() {
-        return credentialRepo.findAll();
+    public List<Credential> getCredentialsByUserId(long userId) {
+        return credentialRepo.findByUserId(userId);
     }
 
     public void deleteCredentialById(Long id) {

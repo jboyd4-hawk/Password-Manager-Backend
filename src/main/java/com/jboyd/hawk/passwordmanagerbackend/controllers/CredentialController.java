@@ -1,29 +1,39 @@
 package com.jboyd.hawk.passwordmanagerbackend.controllers;
 
 import com.jboyd.hawk.passwordmanagerbackend.models.Credential;
+import com.jboyd.hawk.passwordmanagerbackend.models.User;
 import com.jboyd.hawk.passwordmanagerbackend.services.CredentialService;
+import com.jboyd.hawk.passwordmanagerbackend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/credentials")
+@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 public class CredentialController {
 
     @Autowired
     CredentialService credentialService;
 
+    @Autowired
+    UserService userService;
+
     @GetMapping
-    public List<Credential> getCredentials() {
-        return credentialService.getAllCredentials();
+    public List<Credential> getCredentials(Principal principal) {
+        User user = userService.findUsername(principal.getName());
+        return credentialService.getCredentialsByUserId(user.getUserId());
     }
 
     @PostMapping
-    public Credential createCredential(@RequestBody Credential credential) {
+    public Credential createCredential(@RequestBody Credential credential, Principal principal) {
+        User user = userService.findUsername(principal.getName());
+        credential.setUserId(user.getUserId());
         return credentialService.addCredential(credential);
     }
 
